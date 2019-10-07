@@ -1,13 +1,13 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import NavBar from './components/NavBar'; 
+import NavBar from './components/Other/NavBar'; 
 
 import './App.scss';
 
 function App() {
   return (
-    <div className="App">
+    <div className="app-main-container">
       <Route path="/" component={NavBar} />
     </div>
   );
