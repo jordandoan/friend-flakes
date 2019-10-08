@@ -1,6 +1,7 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
-import Login from '../../Forms/Login/';
+import LoginForm from '../../Forms/LoginForm/';
 
 import './NavBar.scss';
 
@@ -10,9 +11,11 @@ const NavBar = () => {
             <h1>Friend Flakes</h1>
             <div className="links-container">
                 <div>
-                    Links Go here
+                    <NavLink to="/">Home</NavLink>
+                    <NavLink to="/">Leaderboards</NavLink>
+                    <NavLink to="/">Sign Up</NavLink>
                 </div>
-                <Login />
+                <LoginForm />
             </div>
         </div>
     )
