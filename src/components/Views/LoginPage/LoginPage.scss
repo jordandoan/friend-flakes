@@ -1,0 +1,14 @@
+@import '../../../App.scss';
+
+.login-page-container {
+    width: 70%;
+    margin: auto;
+    padding-top:3%;
+    form {
+        width: 20%;
+        margin: auto;
+        button {
+            width: 100%;
+        }
+    }
+}
