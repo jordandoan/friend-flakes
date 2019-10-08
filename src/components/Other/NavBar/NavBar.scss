@@ -4,10 +4,11 @@
     display: flex;
     justify-content: space-between;
     align-items:center;
-    background-color: cadetblue;
+    background-color: #313b72;
     height: 8vh;
     h1 {
         margin-left: 1%;
+        color:white;
     }
     .links-container {
         display: flex;
@@ -15,6 +16,6 @@
         align-items:center;
     }
     a {
-        color:darkblue;
+        color:gray;
     }
 }
