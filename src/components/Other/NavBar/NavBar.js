@@ -5,7 +5,7 @@ import LoginForm from '../../Forms/LoginForm/';
 
 import './NavBar.scss';
 
-const NavBar = () => {
+const NavBar = (props) => {
     return (
         <div className="nav-bar">
             <h1>Friend Flakes</h1>
@@ -15,7 +15,7 @@ const NavBar = () => {
                     <NavLink to="/">Leaderboards</NavLink>
                     <NavLink to="/">Sign Up</NavLink>
                 </div>
-                <LoginForm />
+                <LoginForm history={props.history}/>
             </div>
         </div>
     )
