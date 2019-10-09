@@ -1,0 +1,21 @@
+@import '../../../App.scss';
+
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    background-color: #313b72;
+    height: 8vh;
+    h1 {
+        margin-left: 1%;
+        color:white;
+    }
+    .links-container {
+        display: flex;
+        justify-content: flex-end;
+        align-items:center;
+    }
+    a {
+        color:gray;
+    }
+}
