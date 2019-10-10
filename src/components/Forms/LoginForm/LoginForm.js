@@ -1,11 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Icon, Input, Button } from 'antd';
+import { connect } from 'react-redux';
+
+import { logInUser, resetError } from '../../../actions';
 
 const LoginForm = (props) => {
-
+    
     useEffect(() => {
         props.form.validateFields();
-    },[])
+    }, []);
+
+    useEffect(() => {
+        if (props.error) {
+            props.history.push("/login");
+            props.resetError();
+        }
+    },[props.error]);
 
     const [loading, setLoading] = useState(false);
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = props.form;
@@ -18,13 +28,9 @@ const LoginForm = (props) => {
         e.preventDefault();
         props.form.validateFields((err, values) => {
             if (!err) {
-                if (values.username !== "test" && values.password !== "password") {
-                    props.history.push("/login")
-                    props.form.resetFields();
-                    setLoading(false);
-                } else {
-                    console.log("log in successful!");
-                }
+                props.logInUser(values);
+                props.form.resetFields();
+                setLoading(false);
             }
         })
     }
@@ -65,4 +71,10 @@ const LoginForm = (props) => {
     )
 }
 
-export default Form.create()(LoginForm);
+const mapStateToProps = state => {
+    return {
+        error: state.error
+    }
+};
+
+export default connect(mapStateToProps, { logInUser: logInUser, resetError:resetError })(Form.create()(LoginForm));
