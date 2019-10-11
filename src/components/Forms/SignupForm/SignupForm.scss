@@ -1,0 +1,36 @@
+.signup-container {
+    margin: 1%;
+    .signup-form {
+        background-color: #ebebeb;
+        border-radius: 40px;
+        padding: 5% 1%;
+        > * {
+            margin:auto;
+            padding: 1% 0;
+        }
+    }
+    .names {
+        display:flex;
+        > * {
+            width: 50%;
+            margin: auto;
+        }
+        .last-name {
+            margin-left: 2%;
+        }
+    }
+    .fields, .names {
+        width: 82%;
+    }
+    .ant-btn-primary {
+        background-color: #52c41a;
+        border: none;
+        &:active {
+            background-color: #95de64;
+        }
+        &:hover {
+            background-color: #95de64;
+        }
+    }
+    
+}

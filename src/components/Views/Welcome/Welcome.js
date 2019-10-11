@@ -1,8 +1,19 @@
 import React from 'react';
 
+import SignupForm from '../../Forms/SignupForm';
+
+import './Welcome.scss';
+
 const Welcome = () => {
     return (
-        <div>Welcome Page</div>
+        <div className="welcome-container">
+            <section>
+                Insert Description
+            </section>
+            <section>
+                <SignupForm />
+            </section>
+        </div>
     )
 }
 

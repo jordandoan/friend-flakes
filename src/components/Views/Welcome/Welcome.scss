@@ -1,0 +1,10 @@
+@import '../../../App.scss';
+
+.welcome-container {
+    display:flex;
+    section {
+        width: 50%;
+        height: 100%;
+        border: 1px solid red;
+    }
+}
