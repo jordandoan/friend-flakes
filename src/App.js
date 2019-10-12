@@ -10,7 +10,7 @@ import SignupForm from './components/Views/SignupPage';
 import './App.scss';
 
 function App() {
-  let show = true;
+  let show = false;
   return (
     <div className="app-main-container">
       <Route path="/" component={NavBar} />
