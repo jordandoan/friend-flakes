@@ -6,17 +6,19 @@ import { logInUser, resetError } from '../../../actions';
 
 const LoginForm = (props) => {
 
+    const [loading, setLoading] = useState(false);
+
     useEffect(() => {
         props.form.validateFields();
+        props.resetError();
     },[])
+
     useEffect(() => {
-        if (props.error) {
+        if (props.error && loading) {
             props.history.push("/login");
-            props.resetError();
         }
     },[props.error]);
 
-    const [loading, setLoading] = useState(false);
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = props.form;
 
     const hasErrors = (fieldsError) => {
@@ -29,7 +31,6 @@ const LoginForm = (props) => {
             if (!err) {
                 props.logInUser(values);
                 props.form.resetFields();
-
             }
         })
     }

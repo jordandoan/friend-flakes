@@ -10,6 +10,7 @@ export const NO_ERROR = "NO_ERROR";
 export const LOGIN_PAGE_LOAD = "LOGIN_PAGE_LOAD";
 
 export const logInUser = (user) => dispatch => {
+  dispatch({type: NO_ERROR})
   axios.post("http://localhost:5000/api/users/login", user)
     .then(res =>  dispatch({type: LOGIN_SUCCESS, payload: res.data}))
     .catch(err => dispatch({type: LOGIN_ERROR, payload:err.response.data.error}));

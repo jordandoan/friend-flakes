@@ -13,12 +13,27 @@ const LoginPage = (props) => {
     
     useEffect(() => {
         props.loginOnLoad();
+        setLoading(false);
     }, [])
+
+    useEffect(() => {
+        console.log(props.error);
+        if (props.username) {
+            props.history.push("/");
+        }
+        if (props.error) {
+            setLoading(false);
+        }
+    }, [props.username, props.error])
+
     const handleSubmit = e => {
         e.preventDefault();
         props.form.validateFields((err, values) => {
             if (!err) {
-                // LOG IN
+                props.logInUser(values);
+                props.form.resetFields();
+            } else {
+                setLoading(false);
             }
         });
     };
@@ -61,7 +76,8 @@ const LoginPage = (props) => {
 
 const mapStateToProps = state => {
     return {
-        error: state.login_error
+        error: state.login_error,
+        username: state.username
     }
 };
 

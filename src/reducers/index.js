@@ -3,9 +3,9 @@ import { ERROR, NO_ERROR, LOGIN_SUCCESS,SIGNUP_SUCCESS, LOGIN_ERROR, SIGNUP_ERRO
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS:
-            return {...state, username: action.payload.username, error: false, error_message: "", signup_success: "" }
+            return {...state, username: action.payload.username, error: false, error_message: "", signup_success: "", login_error: "" }
         case SIGNUP_SUCCESS:
-            return {...state, error: "", signup_success: "You are registered!" }
+            return {...state, error: "", signup_success: "You are registered!", signup_error: "" }
         case LOGIN_ERROR:
             return {...state, login_error: action.payload, signup_success: "" }
         case SIGNUP_ERROR:
