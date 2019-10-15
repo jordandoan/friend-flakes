@@ -3,7 +3,7 @@ import { LOGIN_FAILURE, LOGIN_SUCCESS, NO_ERROR } from '../actions/index';
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS:
-            return {...state, error: false, error_message: "" }
+            return {...state, username: action.payload.username, error: false, error_message: "" }
         case LOGIN_FAILURE:
             return {...state, error: true, error_message: action.payload }
         case NO_ERROR:
@@ -16,8 +16,9 @@ export const reducer = (state = initialState, action) => {
 
 const initialState = {
     title: "Friend Flakes",
-    error: false,
+    error: null,
     error_message: "",
+    username: "",
     user_data: {
         id: 1,
         username: "jordowag",

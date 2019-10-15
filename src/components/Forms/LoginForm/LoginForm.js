@@ -5,10 +5,6 @@ import { connect } from 'react-redux';
 import { logInUser, resetError } from '../../../actions';
 
 const LoginForm = (props) => {
-    
-    useEffect(() => {
-        props.form.validateFields();
-    }, []);
 
     useEffect(() => {
         if (props.error) {
@@ -30,7 +26,7 @@ const LoginForm = (props) => {
             if (!err) {
                 props.logInUser(values);
                 props.form.resetFields();
-                setLoading(false);
+
             }
         })
     }

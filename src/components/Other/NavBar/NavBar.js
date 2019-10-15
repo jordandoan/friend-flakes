@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import LoginForm from '../../Forms/LoginForm/';
 
@@ -14,12 +15,19 @@ const NavBar = (props) => {
                 <div>
                     <NavLink to="/">Home</NavLink>
                     <NavLink to="/">Leaderboards</NavLink>
-                    <NavLink to="/signup">Sign Up</NavLink>
+                    {!props.username && <NavLink to="/signup">Sign Up</NavLink>}
+                    {props.username && <NavLink to="/">Log out</NavLink>}
                 </div>
-                <Route exact path={["/","/signup"]}><LoginForm history={props.history}/></Route>
+                {!props.username && <Route exact path={["/","/signup"]} component={LoginForm} /> }
             </div>
         </div>
     )
 }
 
-export default NavBar;
+const mapStateToProps = state => {
+    return {
+        username: state.username
+    }
+}
+
+export default connect(mapStateToProps, {})(NavBar);

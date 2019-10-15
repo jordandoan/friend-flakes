@@ -97,5 +97,10 @@ const SignupPage = (props) => {
     )
 }
 
+const mapStateToProps = state => {
+    return {
+        username: state.username
+    }
+}
 
-export default Form.create()(SignupPage);
+export default connect(mapStateToProps, {})(Form.create()(SignupPage));
