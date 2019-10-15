@@ -28,7 +28,7 @@ const initialState = {
     login_error: "",
     signup_error:"",
     signup_success: "",
-    username: "",
+    username: "jordowag",
     user_data: {
         id: 1,
         username: "jordowag",
@@ -37,7 +37,7 @@ const initialState = {
                 id: 1,
                 created_by: 1,
                 name: "Shebang",
-                date: "09/29/1990",
+                date: new Date("09/29/1990"),
                 people: 5,
                 attended: true,
                 points: 3
@@ -46,7 +46,7 @@ const initialState = {
                 id: 2,
                 created_by: 2,
                 name: "Dinner",
-                date: "09/30/1990",
+                date: new Date("09/30/1990"),
                 people: 6,
                 attended: false,
                 points: 5
@@ -55,7 +55,25 @@ const initialState = {
                 id: 3,
                 created_by: 1,
                 name: "Karaoke",
-                date: "09/21/1990",
+                date: new Date("09/21/1990"),
+                people: 4,
+                attended:true,
+                points: 5
+            },
+            {
+                id: 4,
+                created_by: 1,
+                name: "Karaoke pt 2",
+                date: new Date("10/18/2019"),
+                people: 4,
+                attended:true,
+                points: 5
+            },
+            {
+                id: 4,
+                created_by: 2,
+                name: "Dinner pt 2",
+                date: new Date("10/25/2019"),
                 people: 4,
                 attended:true,
                 points: 5

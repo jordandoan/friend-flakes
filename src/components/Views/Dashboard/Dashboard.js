@@ -6,18 +6,14 @@ import './Dashboard.scss';
 
 const Dashboard = (props) => {
     let user = props.user_data;
-    console.log(user);
-    let createdEvents = [];
-    let otherEvents = [];
+
+    let pastEvents;
+    let createdFutureEvents;
+    let otherFutureEvents;
+
     if (user) {
-        user.events.forEach(event => {
-            if (event.created_by === user.id) {
-                createdEvents.push(event);
-            } else {
-                otherEvents.push(event);
-            }
-        }
-    )}
+        [pastEvents, createdFutureEvents, otherFutureEvents] = sortEvents(user.events, user.id);
+    }
 
     return (
         <div>
@@ -25,21 +21,30 @@ const Dashboard = (props) => {
             {user && 
                 <div>
                     <h2>Hello, {user.first_name}</h2>
-                    Your Events: 
-                    {createdEvents.map(event => 
+                    Upcoming Events:
+                    Your Events:
+                    {createdFutureEvents.map(event => 
                         <div>
-                            {event.name}
-                            {event.date}
-                            {event.points}
+                            {event.name} <br />
+                            {event.date.toString().substring(0,15)} <br />
+                            {event.points} <br />
                         </div>
                     )}
                     Other Events:
-                    {otherEvents.map(event => 
+                    {otherFutureEvents.map(event => 
                         <div>
-                            {event.name}
-                            {event.date}
-                            {event.points}
-                            {event.attended}
+                            <p>{event.name}</p>
+                            <p>{event.date.toString().substring(0,15)}</p>
+                            <p>Points: {event.points}</p>
+                        </div>
+                    )}
+                    Past Events:
+                    {pastEvents.map(event => 
+                        <div>
+                            <p>{event.name}</p>
+                            <p>{event.date.toString().substring(0,15)}</p>
+                            <p>Points: {event.points}</p>
+                            <p>{event.attended}</p>
                         </div>
                     )}
                     
@@ -49,6 +54,24 @@ const Dashboard = (props) => {
     )
 }
 
+function sortEvents(events, id) {
+    let time = new Date().getTime();
+    let pastEvents = [];
+    let yourFuture = [];
+    let otherFuture = [];
+    events.forEach(event => {
+        if (event.date.getTime() < time) {
+            pastEvents.push(event)
+        } else {
+            if (event.created_by == id) {
+                yourFuture.push(event)
+            } else {
+                otherFuture.push(event);
+            }
+        }
+    });
+    return [ pastEvents, yourFuture, otherFuture ]
+}
 const mapStateToProps = state => {
     return {
         user_data: state.user_data
