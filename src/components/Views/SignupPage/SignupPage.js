@@ -4,10 +4,10 @@ import SignupForm from '../../Forms/SignupForm';
 
 import './SignupPage.scss';
 
-const SignupPage = () => {
+const SignupPage = (props) => {
     return (
         <div className="signup-page-container">
-            <SignupForm />
+            <SignupForm history={props.history} />
         </div>
     )
 }

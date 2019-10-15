@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, Form, Button, Icon, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
@@ -8,6 +8,13 @@ import { logInUser } from '../../../actions';
 import './SignupForm.scss';
 
 const SignupPage = (props) => {
+    
+    useEffect(() => {
+        if (props.username) {
+            props.history.push("/");
+        }
+    },[props.username])
+
     const [loading, setLoading] = useState(false);
     const { getFieldDecorator } = props.form;
 
