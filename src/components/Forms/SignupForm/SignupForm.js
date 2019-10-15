@@ -3,12 +3,12 @@ import { Alert, Form, Button, Icon, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { logInUser } from '../../../actions';
+import { signUpUser } from '../../../actions';
 
 import './SignupForm.scss';
 
 const SignupPage = (props) => {
-    
+
     useEffect(() => {
         if (props.username) {
             props.history.push("/");
@@ -23,9 +23,9 @@ const SignupPage = (props) => {
         props.form.validateFields((err, values) => {
             console.log(values);
             if (!err) {
-                // LOG IN
+                props.signUpUser(values);
             } else {
-                //setLoading(false);
+                setLoading(false);
             }
         });
     };
@@ -71,18 +71,6 @@ const SignupPage = (props) => {
                     )}
                 </Form.Item>
                 <Form.Item className="fields">
-                    {getFieldDecorator('email', {
-                        rules: [{ required: true, message: 'Please input your email!' }],
-                        })(
-                            <Input
-                                size="large"
-                                prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                                type="email"
-                                placeholder="Email"
-                            />,
-                        )}
-                </Form.Item>
-                <Form.Item className="fields">
                     {getFieldDecorator('password', {
                         rules: [{ required: true, message: 'Please input your Password!' }],
                         })(
@@ -110,4 +98,4 @@ const mapStateToProps = state => {
     }
 }
 
-export default connect(mapStateToProps, {})(Form.create()(SignupPage));
+export default connect(mapStateToProps, {signUpUser: signUpUser})(Form.create()(SignupPage));

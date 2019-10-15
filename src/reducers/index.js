@@ -1,10 +1,12 @@
-import { LOGIN_FAILURE, LOGIN_SUCCESS, NO_ERROR } from '../actions/index';
+import { ERROR, LOGIN_SUCCESS, NO_ERROR, SIGNUP_SUCCESS } from '../actions/index';
 
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS:
             return {...state, username: action.payload.username, error: false, error_message: "" }
-        case LOGIN_FAILURE:
+        case SIGNUP_SUCCESS:
+            return {...state, error: false, error_message: ""}
+        case ERROR:
             return {...state, error: true, error_message: action.payload }
         case NO_ERROR:
             return {...state, error: false }
