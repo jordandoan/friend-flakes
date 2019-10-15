@@ -1,16 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, Form, Button, Icon, Input } from 'antd';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { logInUser } from '../../../actions';
+import { logInUser, loginOnLoad } from '../../../actions';
 
 import './LoginPage.scss';
 
 const LoginPage = (props) => {
     const [loading, setLoading] = useState(false);
     const { getFieldDecorator } = props.form;
-
+    
+    useEffect(() => {
+        props.loginOnLoad();
+    }, [])
     const handleSubmit = e => {
         e.preventDefault();
         props.form.validateFields((err, values) => {
@@ -22,7 +25,7 @@ const LoginPage = (props) => {
 
     return (
         <div className="login-page-container">
-            {props.error_message && <Alert className="alert" message="Error" description={props.error_message} type="error" closable showIcon />}
+            {props.error && <Alert className="alert" message="Error" description={props.error} type="error" closable showIcon />}
             <Form onSubmit={(e) => handleSubmit(e)} className="login-form">
                 <Form.Item>
                     {getFieldDecorator('username', {
@@ -58,9 +61,8 @@ const LoginPage = (props) => {
 
 const mapStateToProps = state => {
     return {
-        error: state.error,
-        error_message: state.error_message
+        error: state.login_error
     }
 };
 
-export default connect(mapStateToProps, { logInUser: logInUser })(Form.create()(LoginPage));
+export default connect(mapStateToProps, { logInUser: logInUser, loginOnLoad: loginOnLoad})(Form.create()(LoginPage));

@@ -7,6 +7,9 @@ import { logInUser, resetError } from '../../../actions';
 const LoginForm = (props) => {
 
     useEffect(() => {
+        props.form.validateFields();
+    },[])
+    useEffect(() => {
         if (props.error) {
             props.history.push("/login");
             props.resetError();
@@ -69,7 +72,7 @@ const LoginForm = (props) => {
 
 const mapStateToProps = state => {
     return {
-        error: state.error
+        error: state.login_error
     }
 };
 

@@ -8,20 +8,27 @@ import { signUpUser } from '../../../actions';
 import './SignupForm.scss';
 
 const SignupPage = (props) => {
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+
+    }, [])
 
     useEffect(() => {
         if (props.username) {
             props.history.push("/");
         }
-    },[props.username])
+        if (props.error || props.signup_success) {
+            setLoading(false);
+        }
 
-    const [loading, setLoading] = useState(false);
+    },[props.username, props.error, props.signup_success])
+
     const { getFieldDecorator } = props.form;
 
     const handleSubmit = e => {
         e.preventDefault();
-        props.form.validateFields((err, values) => {
-            console.log(values);
+        props.form.validateFields(async (err, values) => {
             if (!err) {
                 props.signUpUser(values);
             } else {
@@ -32,6 +39,8 @@ const SignupPage = (props) => {
 
     return (
         <div className="signup-container">
+            { props.signup_success && <p>{props.signup_success} <Link to="/login">Log in </Link></p>}
+            { props.error && <p>{props.error}</p>}
             <h2>Sign Up</h2>
             <Form onSubmit={(e) => handleSubmit(e)} className="signup-form">
                 <div className="names">
@@ -83,7 +92,7 @@ const SignupPage = (props) => {
                         )}
                 </Form.Item>
             <Form.Item className="fields">
-                <Button type="primary" htmlType="submit" loading={loading} icon="login" onClick={() => setLoading(true)} >
+                <Button type="primary" htmlType="submit" loading={loading} icon="login" onClick={() => setLoading(true)}>
                     Sign Up
                 </Button>
             </Form.Item>
@@ -94,8 +103,10 @@ const SignupPage = (props) => {
 
 const mapStateToProps = state => {
     return {
-        username: state.username
-    }
+        username: state.username,
+        signup_success: state.signup_success,
+        error: state.signup_error,
+    } 
 }
 
 export default connect(mapStateToProps, {signUpUser: signUpUser})(Form.create()(SignupPage));

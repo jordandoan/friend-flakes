@@ -1,15 +1,21 @@
-import { ERROR, LOGIN_SUCCESS, NO_ERROR, SIGNUP_SUCCESS } from '../actions/index';
+import { ERROR, NO_ERROR, LOGIN_SUCCESS,SIGNUP_SUCCESS, LOGIN_ERROR, SIGNUP_ERROR, LOGIN_PAGE_LOAD} from '../actions/index';
 
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS:
-            return {...state, username: action.payload.username, error: false, error_message: "" }
+            return {...state, username: action.payload.username, error: false, error_message: "", signup_success: "" }
         case SIGNUP_SUCCESS:
-            return {...state, error: false, error_message: ""}
+            return {...state, error: "", signup_success: "You are registered!" }
+        case LOGIN_ERROR:
+            return {...state, login_error: action.payload, signup_success: "" }
+        case SIGNUP_ERROR:
+            return {...state, signup_error: action.payload }
         case ERROR:
-            return {...state, error: true, error_message: action.payload }
+            return {...state, error: action.payload }
         case NO_ERROR:
-            return {...state, error: false }
+            return {...state, error:"", login_error: "", signup_error:"" }
+        case LOGIN_PAGE_LOAD: 
+            return {...state, signup_success:"", signup_error: ""}
         default:
             return state
     }
@@ -18,8 +24,10 @@ export const reducer = (state = initialState, action) => {
 
 const initialState = {
     title: "Friend Flakes",
-    error: null,
-    error_message: "",
+    error: "",
+    login_error: "",
+    signup_error:"",
+    signup_success: "",
     username: "",
     user_data: {
         id: 1,

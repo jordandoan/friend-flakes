@@ -4,14 +4,14 @@ import SignupForm from '../../Forms/SignupForm';
 
 import './Welcome.scss';
 
-const Welcome = () => {
+const Welcome = (props) => {
     return (
         <div className="welcome-container">
             <section>
                 Insert Description
             </section>
             <section>
-                <SignupForm />
+                <SignupForm history={props.history}/>
             </section>
         </div>
     )
