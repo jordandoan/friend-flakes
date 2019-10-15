@@ -1,11 +1,13 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import LoginForm from '../../Forms/LoginForm/';
 
 import './NavBar.scss';
 
-const NavBar = () => {
+const NavBar = (props) => {
+
     return (
         <div className="nav-bar">
             <h1>Friend Flakes</h1>
@@ -13,12 +15,19 @@ const NavBar = () => {
                 <div>
                     <NavLink to="/">Home</NavLink>
                     <NavLink to="/">Leaderboards</NavLink>
-                    <NavLink to="/">Sign Up</NavLink>
+                    {!props.username && <NavLink to="/signup">Sign Up</NavLink>}
+                    {props.username && <NavLink to="/">Log out</NavLink>}
                 </div>
-                <LoginForm />
+                {!props.username && <Route exact path={["/","/signup"]} component={LoginForm} /> }
             </div>
         </div>
     )
 }
 
-export default NavBar;
+const mapStateToProps = state => {
+    return {
+        username: state.username
+    }
+}
+
+export default connect(mapStateToProps, {})(NavBar);

@@ -1,20 +1,46 @@
-import React from 'react';
-import { Form, Button, Icon, Input } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Alert, Form, Button, Icon, Input } from 'antd';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+
+import { logInUser, loginOnLoad } from '../../../actions';
 
 import './LoginPage.scss';
 
 const LoginPage = (props) => {
+    const [loading, setLoading] = useState(false);
     const { getFieldDecorator } = props.form;
+    
+    useEffect(() => {
+        props.loginOnLoad();
+        setLoading(false);
+    }, [])
+
+    useEffect(() => {
+        console.log(props.error);
+        if (props.username) {
+            props.history.push("/");
+        }
+        if (props.error) {
+            setLoading(false);
+        }
+    }, [props.username, props.error])
+
     const handleSubmit = e => {
         e.preventDefault();
         props.form.validateFields((err, values) => {
             if (!err) {
-                // LOG IN
+                props.logInUser(values);
+                props.form.resetFields();
+            } else {
+                setLoading(false);
             }
         });
     };
+
     return (
         <div className="login-page-container">
+            {props.error && <Alert className="alert" message="Error" description={props.error} type="error" closable showIcon />}
             <Form onSubmit={(e) => handleSubmit(e)} className="login-form">
                 <Form.Item>
                     {getFieldDecorator('username', {
@@ -38,14 +64,21 @@ const LoginPage = (props) => {
                         )}
                 </Form.Item>
             <Form.Item>
-                <Button type="primary" htmlType="submit" className="login-form-button">
+                <Button type="primary" htmlType="submit" loading={loading} icon="login" onClick={() => setLoading(true)} >
                     Log in
                 </Button>
-                Or <a href="">register now!</a>
+                Or <Link to="/signup">register now!</Link>
             </Form.Item>
         </Form>
       </div>
     )
 }
 
-export default Form.create()(LoginPage);
+const mapStateToProps = state => {
+    return {
+        error: state.login_error,
+        username: state.username
+    }
+};
+
+export default connect(mapStateToProps, { logInUser: logInUser, loginOnLoad: loginOnLoad})(Form.create()(LoginPage));
