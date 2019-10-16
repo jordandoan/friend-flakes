@@ -1,8 +1,10 @@
-import { ERROR, NO_ERROR, LOGIN_SUCCESS,SIGNUP_SUCCESS, LOGIN_ERROR, SIGNUP_ERROR, LOGIN_PAGE_LOAD} from '../actions/index';
+import { ERROR, NO_ERROR, LOGIN_SUCCESS,SIGNUP_SUCCESS, LOGIN_ERROR, SIGNUP_ERROR, LOGIN_PAGE_LOAD, LOG_OUT } from '../actions/index';
 
 export const reducer = (state = initialState, action) => {
     switch (action.type) {
         case LOGIN_SUCCESS:
+            localStorage.setItem('token', action.payload.token);
+            localStorage.setItem('user', action.payload.username);
             return {...state, username: action.payload.username, error: false, error_message: "", signup_success: "", login_error: "" }
         case SIGNUP_SUCCESS:
             return {...state, error: "", signup_success: "You are registered!", signup_error: "" }
@@ -16,6 +18,9 @@ export const reducer = (state = initialState, action) => {
             return {...state, error:"", login_error: "", signup_error:"" }
         case LOGIN_PAGE_LOAD: 
             return {...state, signup_success:"", signup_error: ""}
+        case LOG_OUT:
+            localStorage.clear();
+            return initialState;
         default:
             return state
     }
@@ -28,7 +33,7 @@ const initialState = {
     login_error: "",
     signup_error:"",
     signup_success: "",
-    username: "jordowag",
+    username: localStorage.getItem('user'),
     user_data: {
         id: 1,
         username: "jordowag",

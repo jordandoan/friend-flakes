@@ -16,7 +16,7 @@ const NavBar = (props) => {
                     <NavLink to="/">Home</NavLink>
                     <NavLink to="/">Leaderboards</NavLink>
                     {!props.username && <NavLink to="/signup">Sign Up</NavLink>}
-                    {props.username && <NavLink to="/">Log out</NavLink>}
+                    {props.username && <NavLink to="/logout">Log out</NavLink>}
                 </div>
                 {!props.username && <Route exact path={["/","/signup"]} component={LoginForm} /> }
             </div>
