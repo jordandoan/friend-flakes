@@ -2,6 +2,8 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Spin } from 'antd';
 
+import EventCard from '../../Other/EventCard';
+
 import './Dashboard.scss';
 
 const Dashboard = (props) => {
@@ -21,33 +23,27 @@ const Dashboard = (props) => {
             {user && 
                 <div>
                     <h2>Hello, {user.first_name}</h2>
-                    Upcoming Events:
-                    Your Events:
-                    {createdFutureEvents.map(event => 
+                    <div>
+                        <h2>Upcoming Events:</h2>
                         <div>
-                            {event.name} <br />
-                            {event.date.toString().substring(0,15)} <br />
-                            {event.points} <br />
+                            <h3>Your Events:</h3>
+                            {createdFutureEvents.map(event => 
+                                <EventCard event={event} />
+                            )}
                         </div>
-                    )}
-                    Other Events:
-                    {otherFutureEvents.map(event => 
                         <div>
-                            <p>{event.name}</p>
-                            <p>{event.date.toString().substring(0,15)}</p>
-                            <p>Points: {event.points}</p>
+                            <h3>Other Events:</h3>
+                            {otherFutureEvents.map(event => 
+                                <EventCard event={event} />
+                            )}
                         </div>
-                    )}
-                    Past Events:
-                    {pastEvents.map(event => 
-                        <div>
-                            <p>{event.name}</p>
-                            <p>{event.date.toString().substring(0,15)}</p>
-                            <p>Points: {event.points}</p>
-                            <p>{event.attended}</p>
-                        </div>
-                    )}
-                    
+                    </div>
+                    <div>
+                        <h3>Past Events:</h3>
+                        {pastEvents.map(event => 
+                            <EventCard event={event} />
+                        )}
+                    </div>                    
                 </div>
             }
         </div>
