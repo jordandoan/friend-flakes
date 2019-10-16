@@ -12,7 +12,7 @@ const NavBar = (props) => {
         <div className="nav-bar">
             <h1>Friend Flakes</h1>
             <div className="links-container">
-                <div>
+                <div className="links">
                     <NavLink to="/">Home</NavLink>
                     <NavLink to="/">Leaderboards</NavLink>
                     {!props.username && <NavLink to="/signup">Sign Up</NavLink>}
