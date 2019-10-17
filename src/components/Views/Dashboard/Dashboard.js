@@ -2,22 +2,20 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Spin } from 'antd';
 
+import EventCard from '../../Other/EventCard';
+
 import './Dashboard.scss';
 
 const Dashboard = (props) => {
     let user = props.user_data;
-    console.log(user);
-    let createdEvents = [];
-    let otherEvents = [];
+
+    let pastEvents;
+    let createdFutureEvents;
+    let otherFutureEvents;
+
     if (user) {
-        user.events.forEach(event => {
-            if (event.created_by === user.id) {
-                createdEvents.push(event);
-            } else {
-                otherEvents.push(event);
-            }
-        }
-    )}
+        [pastEvents, createdFutureEvents, otherFutureEvents] = sortEvents(user.events, user.id);
+    }
 
     return (
         <div>
@@ -25,30 +23,51 @@ const Dashboard = (props) => {
             {user && 
                 <div>
                     <h2>Hello, {user.first_name}</h2>
-                    Your Events: 
-                    {createdEvents.map(event => 
+                    <div>
+                        <h2>Upcoming Events:</h2>
                         <div>
-                            {event.name}
-                            {event.date}
-                            {event.points}
+                            <h3>Your Events:</h3>
+                            {createdFutureEvents.map(event => 
+                                <EventCard event={event} />
+                            )}
                         </div>
-                    )}
-                    Other Events:
-                    {otherEvents.map(event => 
                         <div>
-                            {event.name}
-                            {event.date}
-                            {event.points}
-                            {event.attended}
+                            <h3>Other Events:</h3>
+                            {otherFutureEvents.map(event => 
+                                <EventCard event={event} />
+                            )}
                         </div>
-                    )}
-                    
+                    </div>
+                    <div>
+                        <h3>Past Events:</h3>
+                        {pastEvents.map(event => 
+                            <EventCard event={event} />
+                        )}
+                    </div>                    
                 </div>
             }
         </div>
     )
 }
 
+function sortEvents(events, id) {
+    let time = new Date().getTime();
+    let pastEvents = [];
+    let yourFuture = [];
+    let otherFuture = [];
+    events.forEach(event => {
+        if (event.date.getTime() < time) {
+            pastEvents.push(event)
+        } else {
+            if (event.created_by == id) {
+                yourFuture.push(event)
+            } else {
+                otherFuture.push(event);
+            }
+        }
+    });
+    return [ pastEvents, yourFuture, otherFuture ]
+}
 const mapStateToProps = state => {
     return {
         user_data: state.user_data

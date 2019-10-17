@@ -6,15 +6,27 @@
     align-items:center;
     background-color: #313b72;
     height: 8vh;
+    
     h1 {
         margin-left: 1%;
         color:white;
     }
+
     .links-container {
         display: flex;
         justify-content: flex-end;
         align-items:center;
+        width: 40%;
+        .links {
+            width: 30%;
+            display: flex;
+            justify-content: flex-end;
+            > * {
+                padding: 4%;
+            }
+        }
     }
+
     a {
         color:gray;
     }
