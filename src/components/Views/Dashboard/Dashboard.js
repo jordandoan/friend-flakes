@@ -21,30 +21,36 @@ const Dashboard = (props) => {
         <div>
             {!user && <Spin className="spinner" size="large"/>}
             {user && 
-                <div>
-                    <h2>Hello, {user.first_name}</h2>
+                <>
+                <h2>Hello, {user.first_name}</h2>
+                <div className="events-container">
+                    <h2>Upcoming Events:</h2>
                     <div>
-                        <h2>Upcoming Events:</h2>
-                        <div>
-                            <h3>Your Events:</h3>
+                        <h3>Your Events:</h3>
+                        <div className="event-card-container">
                             {createdFutureEvents.map(event => 
-                                <EventCard event={event} />
-                            )}
-                        </div>
-                        <div>
-                            <h3>Other Events:</h3>
-                            {otherFutureEvents.map(event => 
                                 <EventCard event={event} />
                             )}
                         </div>
                     </div>
                     <div>
-                        <h3>Past Events:</h3>
+                        <h3>Other Events:</h3>
+                        <div className="event-card-container">
+                        {otherFutureEvents.map(event => 
+                            <EventCard event={event} />
+                        )}
+                        </div>
+                    </div>
+                </div>
+                <div className="events-container">
+                    <h3>Past Events:</h3>
+                    <div className="event-card-container">
                         {pastEvents.map(event => 
                             <EventCard event={event} />
                         )}
-                    </div>                    
-                </div>
+                    </div>
+                </div>                    
+                </>
             }
         </div>
     )

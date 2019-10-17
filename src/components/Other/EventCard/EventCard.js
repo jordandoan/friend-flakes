@@ -6,6 +6,7 @@ import './EventCard.scss';
 const EventCard = ({ event }) => {
   return (
     <Card 
+      className="event-card"
       title={event.name} 
       extra={<a href="/">More</a>} 
       style={{width:300}}
