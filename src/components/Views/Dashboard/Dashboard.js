@@ -3,10 +3,12 @@ import { connect } from 'react-redux';
 import { Spin } from 'antd';
 
 import EventCard from '../../Other/EventCard';
+import FriendsList from '../../Other/FriendsList';
 
 import './Dashboard.scss';
 
 const Dashboard = (props) => {
+    let token = localStorage.getItem('token');
     let user = props.user_data;
 
     let pastEvents;
@@ -20,9 +22,10 @@ const Dashboard = (props) => {
     return (
         <div>
             {!user && <Spin className="spinner" size="large"/>}
-            {user && 
+            {user && token &&
                 <>
-                <h2>Hello, {user.first_name}</h2>
+                <FriendsList />       
+                <h2>Hello, {props.username}</h2>
                 <div className="events-container">
                     <h2>Upcoming Events:</h2>
                     <div>
@@ -49,7 +52,8 @@ const Dashboard = (props) => {
                             <EventCard event={event} />
                         )}
                     </div>
-                </div>                    
+                </div>
+             
                 </>
             }
         </div>
@@ -76,7 +80,8 @@ function sortEvents(events, id) {
 }
 const mapStateToProps = state => {
     return {
-        user_data: state.user_data
+        user_data: state.user_data,
+        username: state.username,
     }
 }
 export default connect(mapStateToProps, {})(Dashboard);

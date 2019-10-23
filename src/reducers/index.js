@@ -20,7 +20,7 @@ export const reducer = (state = initialState, action) => {
             return {...state, signup_success:"", signup_error: ""}
         case LOG_OUT:
             localStorage.clear();
-            return initialState;
+            return {...initialState, username:""};
         default:
             return state
     }
