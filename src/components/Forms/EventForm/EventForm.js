@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Form, Icon, Input, Button, DatePicker, InputNumber } from 'antd';
 import moment from 'moment';
 
+import './EventForm.scss';
+
 const EventForm = (props) => {
   const [loading, setLoading] = useState(false);
 
@@ -45,7 +47,8 @@ const EventForm = (props) => {
                           rules: [{ required: true}],
                       })(
                           <InputNumber
-                              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                              style={{width: '500px'}}
+                              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)'}} />}
                               placeholder="Flake Points"
                           />,
                       )}
