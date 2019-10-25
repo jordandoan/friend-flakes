@@ -1,0 +1,14 @@
+@import '../../../App.scss';
+
+.tabs-container { 
+  .accept {
+    background-color: #52c41a;
+    border: none;
+    &:active {
+        background-color: #95de64;
+    }
+    &:hover {
+        background-color: #95de64;
+    }
+  }
+}

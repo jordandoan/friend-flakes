@@ -9,6 +9,12 @@
 - Leaderboards
   - Graph of all users points
   - Global and local/friends only view
+# Users
+ - Include avatar picture?
 # Forms
 # Friends
-
+ - Friend system
+ - Delete, add, remove
+# Search
+  - Search for events
+  - Search for users

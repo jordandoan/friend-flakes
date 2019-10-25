@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Spin } from 'antd';
+import { Spin, Button } from 'antd';
 
 import EventCard from '../../Other/EventCard';
 import FriendsList from '../../Other/FriendsList';
@@ -24,8 +24,8 @@ const Dashboard = (props) => {
             {!user && <Spin className="spinner" size="large"/>}
             {user && token &&
                 <>
-                <FriendsList />       
                 <h2>Hello, {props.username}</h2>
+                <Button>Add an event</Button>
                 <div className="events-container">
                     <h2>Upcoming Events:</h2>
                     <div>
