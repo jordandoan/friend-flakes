@@ -8,6 +8,7 @@ import Welcome from './components/Views/Welcome';
 import Dashboard from './components/Views/Dashboard';
 import SignupForm from './components/Views/SignupPage';
 import LogOut from './components/Other/LogOut';
+import EventForm from './components/Forms/EventForm';
 
 import './App.scss';
 
@@ -16,11 +17,12 @@ function App({username}) {
   return (
     <div className="app-main-container">
       <Route path="/" component={NavBar} />
-      <Route path="/login" component={LoginPage} />
+      <EventForm />
+      {/* <Route path="/login" component={LoginPage} />
       <Route path="/signup" component={SignupForm} />
       <Route path="/logout" component={LogOut} />
       {!username && <Route exact path="/" component={Welcome} />}
-      {username && <Route exact path="/" component={Dashboard} />}
+      {username && <Route exact path="/" component={Dashboard} />} */}
     </div>
   );
 }
