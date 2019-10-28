@@ -17,7 +17,6 @@ const LoginPage = (props) => {
     }, [])
 
     useEffect(() => {
-        console.log(props.error);
         if (props.username) {
             props.history.push("/");
         }
