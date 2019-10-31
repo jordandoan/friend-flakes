@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Icon, Input, Button, DatePicker, InputNumber } from 'antd';
+import { Form, Icon, Input, Button, DatePicker, InputNumber, Modal } from 'antd';
 import moment from 'moment';
 
 import './EventForm.scss';
@@ -7,20 +7,18 @@ import './EventForm.scss';
 const EventForm = (props) => {
   const [loading, setLoading] = useState(false);
 
-  const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched, getFieldValue } = props.form;
-
-  const hasErrors = (fieldsError) => {
-      return Object.keys(fieldsError).some(field => fieldsError[field]);
-  }
+  const { getFieldDecorator, getFieldValue } = props.form;
 
   const handleSubmit = (e) => {
       e.preventDefault();
       props.form.validateFields((err, values) => {
-          console.log(values.names);
+          const {keys, names, ...rest} = values;
           if (!err) {
               alert("successful!");
+              props.setVis(false);
           }
       })
+
   }
 
   const [id, setId] = useState(0);
@@ -29,7 +27,7 @@ const EventForm = (props) => {
     // can use data-binding to get
     const keys = form.getFieldValue('keys');
     // We need at least one passenger
-    if (keys.length === 1) {
+    if (keys.length === 0) {
       return;
     }
 
@@ -68,6 +66,7 @@ const EventForm = (props) => {
       sm: { span: 20, offset: 4 },
     },
   };
+  
   getFieldDecorator('keys', { initialValue: [] });
   const keys = getFieldValue('keys');
   const formItems = keys.map((k, index) => (
@@ -86,8 +85,8 @@ const EventForm = (props) => {
             message: "Please enter guest name or delete this field.",
           },
         ],
-      })(<Input placeholder="Username" style={{ width: '60%', marginRight: 8 }} />)}
-      {keys.length > 1 ? (
+      })(<Input placeholder="Username" style={{ width: '60%'}} />)}
+      {keys.length > 0 ? (
         <Icon
           className="dynamic-delete-button"
           type="minus-circle-o"
@@ -100,58 +99,85 @@ const EventForm = (props) => {
   const dateFormat = 'MM/DD/YYYY';
 
   return (
-          <div>
-              <Form onSubmit={(e) => handleSubmit(e)} >
-                  <Form.Item>
-                      {getFieldDecorator('title', {
-                        rules: [{ required: true, message: 'Please enter a title' }],
-                      })(
-                          <Input
-                              prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
-                              placeholder="Title"
-                          />,
-                      )}
-                  </Form.Item>
-                  <Form.Item>
-                      {getFieldDecorator('points', {
-                        rules: [{ required: true, message: 'Please enter an integer' }],
-                      })(
-                          <InputNumber
-                              style={{width: '500px'}}
-                              prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)'}} />}
-                              placeholder="Flake Points"
-                          />,
-                      )}
-                  </Form.Item>
-                  <Form.Item>
-                      {getFieldDecorator('date', {
-                          rules: [{ required: true, message: "Date required"}],
-                      })(
-                          <DatePicker initialValue={moment('2015/01/01', dateFormat)} format={dateFormat} />
-                      )}
-                  </Form.Item>
-                  <Form.Item>
-                      {getFieldDecorator('description', {
-                      })(
-                          <Input.TextArea
-                              placeholder="Description (optional)"
-                          />,
-                      )}
-                  </Form.Item>
-                  {formItems}
-                  <Form.Item {...formItemLayoutWithOutLabel}>
-                    <Button type="dashed" onClick={add} style={{ width: '60%' }}>
-                      <Icon type="plus" /> Add Guest
-                    </Button>
-                  </Form.Item>
-                  <Form.Item>
-                      <Button type="primary" htmlType="submit" loading={loading} icon="login">
-                          Create Event
+        <Modal
+          visible={props.visible}
+          title="Create a new collection"
+          okText="Create"
+          onCancel={props.onCancel}
+          onOk={e => handleSubmit(e)}
+        >
+            <div className='event-form-container'>
+                <Form onSubmit={(e) => handleSubmit(e)} >
+                    <Form.Item>
+                        {getFieldDecorator('title', {
+                          rules: [{ required: true, message: 'Please enter a title' }],
+                        })(
+                            <Input
+                                prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                                placeholder="Title"
+                            />,
+                        )}
+                    </Form.Item>
+                    <Form.Item>
+                        {getFieldDecorator('points', {
+                          rules: [{ required: true, message: 'Please enter an integer' }],
+                        })(
+                            <InputNumber
+                                style={{width: '500px'}}
+                                prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)'}} />}
+                                placeholder="Flake Points"
+                            />,
+                        )}
+                    </Form.Item>
+                    <Form.Item>
+                        {getFieldDecorator('date', {
+                            rules: [{ required: true, message: "Date required"}],
+                        })(
+                            <DatePicker initialValue={moment('2015/01/01', dateFormat)} format={dateFormat} />
+                        )}
+                    </Form.Item>
+                    <Form.Item>
+                        {getFieldDecorator('description', {
+                        })(
+                            <Input.TextArea
+                                placeholder="Description (optional)"
+                            />,
+                        )}
+                    </Form.Item>
+                    {formItems}
+                    <Form.Item {...formItemLayoutWithOutLabel}>
+                      <Button type="dashed" onClick={add}>
+                        <Icon type="plus" /> Add Guest
                       </Button>
-                  </Form.Item>
-              </Form>
-          </div>
+                    </Form.Item>
+                </Form>
+            </div>
+          </Modal>
   )
 }
+const NewForm = Form.create()(EventForm);
 
-export default Form.create()(EventForm);
+const ModalButton = () => {
+  let [visible, setVis] = useState(false);
+
+  const showModal = () => {
+    setVis(true)
+  }
+  const handleCancel = () => {
+    setVis(false);
+  }
+
+  return (
+    <div>
+      <Button type="primary" onClick={showModal}>
+        Create event
+      </Button>
+      <NewForm
+        visible={visible}
+        onCancel={handleCancel}
+        setVis={setVis}
+      />
+    </div>
+  )
+}
+export default ModalButton;
