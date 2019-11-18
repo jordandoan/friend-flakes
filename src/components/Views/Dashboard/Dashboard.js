@@ -1,16 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Spin, Button } from 'antd';
+import { axiosWithAuth } from '../../../utils';
 
 import EventCard from '../../Other/EventCard';
 import FriendsList from '../../Other/FriendsList';
+import EventForm from '../../Forms/EventForm';
 
 import './Dashboard.scss';
+import { getUserInfo } from '../../../actions';
 
 const Dashboard = (props) => {
     let token = localStorage.getItem('token');
     let user = props.user_data;
-
+    console.log(user);
     let pastEvents;
     let createdFutureEvents;
     let otherFutureEvents;
@@ -19,13 +22,17 @@ const Dashboard = (props) => {
         [pastEvents, createdFutureEvents, otherFutureEvents] = sortEvents(user.events, user.id);
     }
 
+    useEffect(() => {
+      props.getUserInfo(props.username);
+    }, [])
     return (
         <div>
             {!user && <Spin className="spinner" size="large"/>}
             {user && token &&
                 <>
                 <h2>Hello, {props.username}</h2>
-                <Button>Add an event</Button>
+                <FriendsList />
+                <EventForm />
                 <div className="events-container">
                     <h2>Upcoming Events:</h2>
                     <div>
@@ -61,11 +68,13 @@ const Dashboard = (props) => {
 }
 
 function sortEvents(events, id) {
+
     let time = new Date().getTime();
     let pastEvents = [];
     let yourFuture = [];
     let otherFuture = [];
     events.forEach(event => {
+        event.date = new Date(event.date);
         if (event.date.getTime() < time) {
             pastEvents.push(event)
         } else {
@@ -84,4 +93,4 @@ const mapStateToProps = state => {
         username: state.username,
     }
 }
-export default connect(mapStateToProps, {})(Dashboard);
+export default connect(mapStateToProps, { getUserInfo: getUserInfo })(Dashboard);

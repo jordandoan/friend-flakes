@@ -10,8 +10,9 @@ const FriendsList = () => {
   let [friends, setFriends] = useState();
 
   useEffect(() => {
-    axiosWithAuth().get("http://localhost:5000/api/users/friends")
+    axiosWithAuth().get("/api/users/friends")
       .then(res => setFriends(res.data))
+      .catch(err => console.log(err.response));
   }, [])
 
   return (

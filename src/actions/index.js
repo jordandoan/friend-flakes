@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { axiosWithAuth } from '../utils';
 
 export const LOGGING_IN = "LOGGING_IN";
 export const ERROR = "ERROR";
@@ -9,16 +9,20 @@ export const SIGNUP_SUCCESS = "SIGNUP_SUCCESS";
 export const NO_ERROR = "NO_ERROR";
 export const LOGIN_PAGE_LOAD = "LOGIN_PAGE_LOAD";
 export const LOG_OUT = "LOG_OUT";
+export const LOADING = "LOADING";
+export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
+export const FETCH_EVENT_SUCCESS = "FETCH_EVENT_SUCCESS";
+export const FETCH_FAILURE = "FETCH_FAILURE";
 
 export const logInUser = (user) => dispatch => {
   dispatch({type: NO_ERROR})
-  axios.post("http://localhost:5000/api/auth/login", user)
+  axiosWithAuth().post("/api/auth/login", user)
     .then(res =>  dispatch({type: LOGIN_SUCCESS, payload: {username: user.username, token: res.data.token}}))
     .catch(err => dispatch({type: LOGIN_ERROR, payload:err.response.data.error}));
 }
 
 export const signUpUser = (user) => dispatch => {
-  axios.post("http://localhost:5000/api/auth/register", user)
+  axiosWithAuth().post("/api/auth/register", user)
   .then(res =>  dispatch({type: SIGNUP_SUCCESS}))
   .catch(err => dispatch({type: SIGNUP_ERROR, payload:err.response.data.error}));
 }
@@ -29,6 +33,19 @@ export const resetError = () => {
 
 export const loginOnLoad = () => {
   return {type: LOGIN_PAGE_LOAD}
+}
+
+export const getUserInfo = (username) => dispatch => {
+  dispatch({type: LOADING});
+  axiosWithAuth().get(`/api/users/info/${username}`)
+    .then(res => dispatch({type: FETCH_USER_SUCCESS, payload: res.data}))
+}
+
+export const getEventInfo = (id) => dispatch => {
+  dispatch({type: LOADING});
+  axiosWithAuth().get(`/api/events/${id}`)
+    .then(res => dispatch({type: FETCH_EVENT_SUCCESS, payload: res.data}))
+    .catch(err => dispatch({type: FETCH_FAILURE, payload: err.response.data.error}))
 }
 
 export const logOut = () => {
