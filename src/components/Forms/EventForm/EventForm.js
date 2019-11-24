@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Form, Icon, Input, Button, DatePicker, InputNumber, Modal } from 'antd';
+import { connect } from 'react-redux';
 import moment from 'moment';
+
+import { postEventInfo } from '../../../actions';
 
 import './EventForm.scss';
 
@@ -14,7 +17,7 @@ const EventForm = (props) => {
       props.form.validateFields((err, values) => {
           const {keys, names, ...rest} = values;
           if (!err) {
-              alert("successful!");
+              props.postEventInfo(rest, names || [])
               props.setVis(false);
           }
       })
@@ -157,7 +160,7 @@ const EventForm = (props) => {
 }
 const NewForm = Form.create()(EventForm);
 
-const ModalButton = () => {
+const ModalButton = ({ postEventInfo }) => {
   let [visible, setVis] = useState(false);
 
   const showModal = () => {
@@ -176,8 +179,15 @@ const ModalButton = () => {
         visible={visible}
         onCancel={handleCancel}
         setVis={setVis}
+        postEventInfo={postEventInfo}
       />
     </div>
   )
 }
-export default ModalButton;
+
+const mapStateToProps = state => {
+  return {
+    error: state.error
+  }
+}
+export default connect(mapStateToProps, {postEventInfo : postEventInfo })(ModalButton);

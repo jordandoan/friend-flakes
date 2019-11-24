@@ -16,7 +16,7 @@ const Dashboard = (props) => {
     let pastEvents;
     let createdFutureEvents;
     let otherFutureEvents;
-
+    console.log(user);
     if (user) {
         [pastEvents, createdFutureEvents, otherFutureEvents] = sortEvents(user.events, user.id);
     }
@@ -30,7 +30,7 @@ const Dashboard = (props) => {
             {user && token &&
                 <>
                 <h2>Hello, {props.username}</h2>
-                <FriendsList />
+                {/* <FriendsList /> */}
                 <EventForm />
                 <div className="events-container">
                     <h2>Upcoming Events:</h2>
@@ -77,7 +77,7 @@ function sortEvents(events, id) {
         if (event.date.getTime() < time) {
             pastEvents.push(event)
         } else {
-            if (event.created_by == id) {
+            if (event.user_id == id) {
                 yourFuture.push(event)
             } else {
                 otherFuture.push(event);

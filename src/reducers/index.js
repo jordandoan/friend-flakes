@@ -1,16 +1,18 @@
 import {
-	ERROR,
-	NO_ERROR,
-	LOGIN_SUCCESS,
-	SIGNUP_SUCCESS,
-	LOGIN_ERROR,
-	SIGNUP_ERROR,
-	LOGIN_PAGE_LOAD,
+  ERROR,
+  NO_ERROR,
+  LOGIN_SUCCESS,
+  SIGNUP_SUCCESS,
+  LOGIN_ERROR,
+  SIGNUP_ERROR,
+  LOGIN_PAGE_LOAD,
   LOG_OUT,
   LOADING,
   FETCH_USER_SUCCESS,
   FETCH_EVENT_SUCCESS,
   FETCH_FAILURE,
+  POST_EVENT_FAILURE,
+  POST_EVENT_SUCCESS,
 } from '../actions/';
 
 export const reducer = (state = initialState, action) => {
@@ -57,8 +59,8 @@ export const reducer = (state = initialState, action) => {
     case FETCH_FAILURE:
       localStorage.removeItem('event_data');
       return {...state, error: action.payload, called: true}
-		default:
-			return state;
+	default:
+		return state;
 	}
 };
 

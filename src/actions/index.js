@@ -13,6 +13,8 @@ export const LOADING = "LOADING";
 export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS";
 export const FETCH_EVENT_SUCCESS = "FETCH_EVENT_SUCCESS";
 export const FETCH_FAILURE = "FETCH_FAILURE";
+export const POST_EVENT_SUCCESS = "POST_EVENT_SUCCESS";
+export const POST_EVENT_FAILURE = "POST_EVENT_FAILURE";
 
 export const logInUser = (user) => dispatch => {
   dispatch({type: NO_ERROR})
@@ -50,19 +52,26 @@ export const getEventInfo = (id) => dispatch => {
 
 export const postEventInfo = (event, guests) => dispatch => {
   dispatch({type: LOADING});
+  guests.forEach((guest, idx) => {
+    guests[idx] = {username: guest, attended: true}
+  });
   axiosWithAuth().post('/api/events/', event)
     .then(res => {
       let event = res.data;
       if (guests.length) {
-        guests.map(guest => {
+        let guest_res = guests.map(guest => {
           return axiosWithAuth().post(`/api/guests/${event.id}`, guest)
-            .then(res => {})
-            .catch(err => {})
+            .then(res => res)
+            .catch(err => {
+              dispatch({type: POST_EVENT_FAILURE, payload: err.response.data.error})
+            })
         })
+        return Promise.all(guest_res)
+          .then(res => ({type: POST_EVENT_SUCCESS}))
       }
-      dispatch({})
+      return dispatch({type: POST_EVENT_SUCCESS, payload: event})
     })
-    .catch(err => {})
+    .catch(err => dispatch({type: POST_EVENT_FAILURE, payload: err.response.data.error}))
 }
 
 export const logOut = () => {
