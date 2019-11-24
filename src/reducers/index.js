@@ -56,7 +56,6 @@ export const reducer = (state = initialState, action) => {
       return {...initialState, event_data: action.payload}
     case FETCH_FAILURE:
       localStorage.removeItem('event_data');
-      console.log(action.type);
       return {...state, error: action.payload, called: true}
 		default:
 			return state;

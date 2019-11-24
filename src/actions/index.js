@@ -48,6 +48,23 @@ export const getEventInfo = (id) => dispatch => {
     .catch(err => dispatch({type: FETCH_FAILURE, payload: err.response.data.error}))
 }
 
+export const postEventInfo = (event, guests) => dispatch => {
+  dispatch({type: LOADING});
+  axiosWithAuth().post('/api/events/', event)
+    .then(res => {
+      let event = res.data;
+      if (guests.length) {
+        guests.map(guest => {
+          return axiosWithAuth().post(`/api/guests/${event.id}`, guest)
+            .then(res => {})
+            .catch(err => {})
+        })
+      }
+      dispatch({})
+    })
+    .catch(err => {})
+}
+
 export const logOut = () => {
   return {type: LOG_OUT}
 }

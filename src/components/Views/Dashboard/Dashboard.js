@@ -13,7 +13,6 @@ import { getUserInfo } from '../../../actions';
 const Dashboard = (props) => {
     let token = localStorage.getItem('token');
     let user = props.user_data;
-    console.log(user);
     let pastEvents;
     let createdFutureEvents;
     let otherFutureEvents;
