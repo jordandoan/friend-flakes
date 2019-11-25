@@ -4,7 +4,7 @@ import { Button, Form, Input, Icon, InputNumber, DatePicker  } from 'antd';
 import moment from 'moment';
 
 import { axiosWithAuth } from '../../../utils';
-import FriendsList from '../../Other/FriendsList';
+import { editEventInfo } from '../../../actions';
 
 const EditEvent = (props) => {
   const dateFormat = 'MM/DD/YYYY';
@@ -24,13 +24,16 @@ const EditEvent = (props) => {
         props.form.setFieldsValue({date: moment(new Date(date), dateFormat), title, description, points});
       }
     }
-  }, [event])
+    if (props.called && !props.error) {
+      props.history.goBack();
+    }
+  }, [event, props.called])
 
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
 			if (!err) {
-        console.log({...event, ...values});
+        props.editEventInfo({...event, ...values});
 			}
 		});
   }
@@ -81,7 +84,7 @@ const EditEvent = (props) => {
               )(<Input.TextArea placeholder='Description (optional)' />)}
             </Form.Item>
             <Form.Item>
-              <Button htmlType="submit">Edit</Button>
+              <Button htmlType="submit">Save changes</Button>
             </Form.Item>
         </Form>
       }
@@ -91,7 +94,10 @@ const EditEvent = (props) => {
 
 const mapStateToProps = state => {
   return {
-    username: state.username
+    username: state.username,
+    called: state.called,
+    error: state.error,
   }
 }
-export default connect(mapStateToProps, null)(Form.create()(EditEvent));
+
+export default connect(mapStateToProps, { editEventInfo: editEventInfo })(Form.create()(EditEvent));

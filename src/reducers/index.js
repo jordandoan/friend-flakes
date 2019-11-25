@@ -12,7 +12,9 @@ import {
 	FETCH_EVENT_SUCCESS,
 	FETCH_FAILURE,
 	POST_EVENT_FAILURE,
-	POST_EVENT_SUCCESS,
+  POST_EVENT_SUCCESS,
+  EDIT_EVENT_SUCCESS,
+  DELETE_EVENT_SUCCESS,
 } from '../actions/';
 
 export const reducer = (state = initialState, action) => {
@@ -62,7 +64,14 @@ export const reducer = (state = initialState, action) => {
     case POST_EVENT_SUCCESS:
       return {...state, error: '', called: true, loading: false};
     case POST_EVENT_FAILURE:
-          return {...state, error: action.payload, called: true, loading: false};
+      return {...state, error: action.payload, called: true, loading: false};
+    case EDIT_EVENT_SUCCESS: 
+      localStorage.setItem('event_data', JSON.stringify(action.payload));
+      return {...state, called: true, error: '', loading: false, event_data: action.payload}
+    case DELETE_EVENT_SUCCESS:
+      let newEvents = initialState.user_data.events.filter(event => event.id !== action.payload)
+      localStorage.removeItem('event_data');
+      return {...state, called: true, error: '', loading: false, event_data: null, user_data: {...state.user_data, events: newEvents}}
 		default:
 			return state;
 	}

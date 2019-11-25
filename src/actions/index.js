@@ -15,6 +15,8 @@ export const FETCH_EVENT_SUCCESS = "FETCH_EVENT_SUCCESS";
 export const FETCH_FAILURE = "FETCH_FAILURE";
 export const POST_EVENT_SUCCESS = "POST_EVENT_SUCCESS";
 export const POST_EVENT_FAILURE = "POST_EVENT_FAILURE";
+export const EDIT_EVENT_SUCCESS = "EDIT_EVENT_SUCCESS";
+export const DELETE_EVENT_SUCCESS = "DELETE_EVENT_SUCCESS";
 
 export const logInUser = (user) => dispatch => {
   dispatch({type: NO_ERROR})
@@ -74,6 +76,19 @@ export const postEventInfo = (event, guests) => dispatch => {
       return dispatch({type: POST_EVENT_SUCCESS, payload: event})
     })
     .catch(err => dispatch({type: POST_EVENT_FAILURE, payload: err.response.data.error}))
+}
+
+export const editEventInfo = (event) => dispatch => {
+  dispatch({type: LOADING})
+  let { guests, user_id, created_by, id, full_name, ...update } = event;
+  axiosWithAuth().put(`/api/events/${id}`, update)
+    .then(res => dispatch({type: EDIT_EVENT_SUCCESS, payload: event}))
+}
+
+export const deleteEvent = (event_id) => dispatch => {
+  dispatch({type: LOADING})
+  axiosWithAuth().delete(`/api/events/${event_id}`)
+    .then(res => dispatch({type: DELETE_EVENT_SUCCESS, payload: event_id}))
 }
 
 export const logOut = () => {
