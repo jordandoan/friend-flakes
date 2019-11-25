@@ -63,11 +63,13 @@ export const postEventInfo = (event, guests) => dispatch => {
           return axiosWithAuth().post(`/api/guests/${event.id}`, guest)
             .then(res => res)
             .catch(err => {
-              dispatch({type: POST_EVENT_FAILURE, payload: err.response.data.error})
+              console.log(err)
+              return err
             })
         })
         return Promise.all(guest_res)
           .then(res => ({type: POST_EVENT_SUCCESS}))
+          .catch(err => {console.log(err)})
       }
       return dispatch({type: POST_EVENT_SUCCESS, payload: event})
     })

@@ -16,7 +16,6 @@ const Dashboard = (props) => {
     let pastEvents;
     let createdFutureEvents;
     let otherFutureEvents;
-    console.log(user);
     if (user) {
         [pastEvents, createdFutureEvents, otherFutureEvents] = sortEvents(user.events, user.id);
     }
@@ -26,12 +25,13 @@ const Dashboard = (props) => {
     }, [])
     return (
         <div>
-            {!user && <Spin className="spinner" size="large"/>}
-            {user && token &&
+            <EventForm />
+            {props.loading && <Spin className="spinner" size="large"/>}
+            {user &&
                 <>
                 <h2>Hello, {props.username}</h2>
                 {/* <FriendsList /> */}
-                <EventForm />
+
                 <div className="events-container">
                     <h2>Upcoming Events:</h2>
                     <div>
@@ -90,6 +90,7 @@ const mapStateToProps = state => {
     return {
         user_data: state.user_data,
         username: state.username,
+        loading: state.loading,
     }
 }
 export default connect(mapStateToProps, { getUserInfo: getUserInfo })(Dashboard);
