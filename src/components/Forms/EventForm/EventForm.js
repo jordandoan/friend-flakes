@@ -157,7 +157,7 @@ const EventForm = props => {
 							rules: [{ required: true, message: 'Date required' }],
 						})(
 							<DatePicker
-								initialValue={moment('2015/01/01', dateFormat)}
+								defaultValue={moment('2015/01/01', dateFormat)}
 								format={dateFormat}
 							/>,
 						)}

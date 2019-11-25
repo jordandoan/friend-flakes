@@ -11,6 +11,7 @@ import SignupForm from './components/Views/SignupPage';
 import LogOut from './components/Other/LogOut';
 import EventForm from './components/Forms/EventForm';
 import EventInfo from './components/Views/EventInfo';
+import EditEvent from './components/Forms/EditEvent';
 
 import './App.scss';
 import { statement } from '@babel/template';
@@ -27,7 +28,8 @@ function App({username, error, loaded}) {
       {loaded && error && <p>{error}</p>}
       {!username && <Route exact path="/" component={Welcome} />}
       {username && <Route exact path="/" component={Dashboard} />}
-      <PrivateRoute path="/events/:event_id" component={EventInfo} />
+      <PrivateRoute exact path="/events/:event_id" component={EventInfo} />
+      <PrivateRoute path="/events/:event_id/edit" component={EditEvent} />
     </div>
   );
 }

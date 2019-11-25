@@ -16,6 +16,12 @@ const EventInfo = (props) => {
       <Button onClick={() => props.history.push('/')}>Go Back</Button>
       I am the Event Info div
       {event && (<><p>Created by {event.full_name} @{event.created_by}</p>
+      {event.created_by == props.username && <div>
+          <Button onClick={() => props.history.push(`/events/${props.match.params.event_id}/edit`)}>Edit Event Info</Button>
+          <Button>Delete</Button>
+          <Button>Invite guests</Button>
+      </div>
+      }
       <h2>{event.title}</h2>
       <p>Date: {new Date(event.date).toString().substring(0,15)}</p>
       <p>Points: {event.points}</p>
@@ -36,7 +42,8 @@ const EventInfo = (props) => {
 
 const mapStateToProps = state => {
   return {
-    event_data: state.event_data
+    event_data: state.event_data,
+    username: state.username
   }
 }
 
