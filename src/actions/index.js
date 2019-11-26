@@ -70,7 +70,7 @@ export const postEventInfo = (event, guests) => dispatch => {
             })
         })
         return Promise.all(guest_res)
-          .then(res => ({type: POST_EVENT_SUCCESS}))
+          .then(res => dispatch({type: POST_EVENT_SUCCESS}))
           .catch(err => {console.log(err)})
       }
       return dispatch({type: POST_EVENT_SUCCESS, payload: event})

@@ -25,7 +25,7 @@ const EventInfo = (props) => {
       {event.created_by === props.username && <div>
           <Button onClick={() => props.history.push(`/events/${props.match.params.event_id}/edit`)}>Edit Event Info</Button>
           <Button onClick={() => props.deleteEvent(event.id)}>Delete</Button>
-          <Button>Invite guests</Button>
+          <Button >Invite guests</Button>
         </div>
       }
       <h2>{event.title}</h2>

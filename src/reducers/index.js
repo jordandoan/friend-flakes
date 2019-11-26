@@ -64,6 +64,7 @@ export const reducer = (state = initialState, action) => {
     case POST_EVENT_SUCCESS:
       return {...state, error: '', called: true, loading: false};
     case POST_EVENT_FAILURE:
+      console.log('we made it!!!');
       return {...state, error: action.payload, called: true, loading: false};
     case EDIT_EVENT_SUCCESS: 
       localStorage.setItem('event_data', JSON.stringify(action.payload));

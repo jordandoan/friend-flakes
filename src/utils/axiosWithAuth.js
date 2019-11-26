@@ -4,7 +4,7 @@ export const axiosWithAuth = () => {
     const token = localStorage.getItem('token');
 
     return axios.create({
-      baseURL: 'http://localhost:5000',
+      baseURL: 'https://friend-flakes.herokuapp.com/',
       headers: {
         'Content-Type': 'application/json',
         'authorization': `${token}`,
