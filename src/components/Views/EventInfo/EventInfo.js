@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'antd';
 
+import GuestForm from '../../Forms/GuestForm';
 import { getEventInfo, deleteEvent } from '../../../actions';
 
 const EventInfo = (props) => {
@@ -25,7 +26,7 @@ const EventInfo = (props) => {
       {event.created_by === props.username && <div>
           <Button onClick={() => props.history.push(`/events/${props.match.params.event_id}/edit`)}>Edit Event Info</Button>
           <Button onClick={() => props.deleteEvent(event.id)}>Delete</Button>
-          <Button >Invite guests</Button>
+          <GuestForm />
         </div>
       }
       <h2>{event.title}</h2>

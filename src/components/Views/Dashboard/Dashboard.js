@@ -7,6 +7,7 @@ import EventCard from '../../Other/EventCard';
 import FriendsList from '../../Other/FriendsList';
 import EventForm from '../../Forms/EventForm';
 
+
 import './Dashboard.scss';
 import { getUserInfo } from '../../../actions';
 

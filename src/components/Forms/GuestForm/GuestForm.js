@@ -9,15 +9,17 @@ import {
 
 import { connect } from 'react-redux';
 
-let GuestForm = props => {
-
+const GuestForm = props => {
+  console.log(props);
   const { getFieldDecorator, getFieldValue } = props.form;
-  const [id, setId] = useState(0);
+  const [id, setId] = useState(1);
 
   const handleSubmit = e => {
 		e.preventDefault();
 		props.form.validateFields((err, values) => {
+      console.log(values);
 			if (!err) {
+
         alert('successful');
 			}
 		});
@@ -69,7 +71,7 @@ let GuestForm = props => {
 		},
 	};
 
-	getFieldDecorator('keys', { initialValue: [] });
+	getFieldDecorator('keys', { initialValue: [0] });
   const keys = getFieldValue('keys');
   let reg = new RegExp('^(?!' + props.username + '$).*$')
 	const formItems = keys.map((k, index) => (
@@ -89,7 +91,7 @@ let GuestForm = props => {
 					},
 				],
 			})(<Input placeholder='Username' style={{ width: '60%' }} />)}
-			{keys.length > 0 ? (
+			{keys.length > 1 ? (
 				<Icon
 					className='dynamic-delete-button'
 					type='minus-circle-o'
@@ -97,7 +99,8 @@ let GuestForm = props => {
 				/>
 			) : null}
 		</Form.Item>
-	));
+  ));
+  
   return (
     <Modal
       visible={props.visible}
@@ -109,25 +112,25 @@ let GuestForm = props => {
     >
       <div className='event-form-container'>
         <Form onSubmit={e => handleSubmit(e)}>
-          {formItems}
           <Form.Item {...formItemLayoutWithOutLabel}>
             <Button type='dashed' onClick={add}>
               <Icon type='plus' /> Add Guest
             </Button>
           </Form.Item>
+          {formItems}
         </Form>
       </div>
     </Modal>
   );
 }
 
-GuestForm = Form.create(GuestForm);
+const NewGuestForm = Form.create()(GuestForm);
 
-const ModalButton = () => {
-
+const GuestFormModal = () => {
   let [visible, setVis] = useState(false);
 
   const showModal = () => {
+    console.log('hi');
     setVis(true);
   };
   const handleCancel = () => {
@@ -139,7 +142,7 @@ const ModalButton = () => {
       <Button type='primary' onClick={showModal}>
         Invite guests
       </Button>
-      <GuestForm
+      <NewGuestForm
         visible={visible}
         onCancel={handleCancel}
         setVis={setVis}
@@ -151,4 +154,4 @@ const ModalButton = () => {
   );
 };
 
-export default ModalButton;
+export default GuestFormModal;
