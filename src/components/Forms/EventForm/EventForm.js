@@ -22,7 +22,9 @@ const EventForm = props => {
 
 	useEffect(() => {
 	  if (props.called && !props.error) {
-	    props.setVis(false);
+      props.setVis(false);
+      setLoading(false);
+      props.form.resetFields();
 	  } else if (props.error) {
       setLoading(false);
     }

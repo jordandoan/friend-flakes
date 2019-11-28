@@ -18,10 +18,11 @@ import {
   POST_GUESTS_SUCCESS,
   POST_GUESTS_FAILURE,
   EDIT_GUEST_SUCCESS,
+  DELETE_GUEST_SUCCESS,
+  DELETE_GUEST_FAILURE
 } from '../actions/';
 
 export const reducer = (state = initialState, action) => {
-  console.log(action);
 	switch (action.type) {
 		case LOGIN_SUCCESS:
 			localStorage.setItem('token', action.payload.token);
@@ -55,40 +56,54 @@ export const reducer = (state = initialState, action) => {
 			localStorage.clear();
 			return { ...initialState, username: '' };
 		case LOADING:
-			return { ...state, user_data: null, event_data: null };
+			return {...initialState, loading: true};
 		case FETCH_USER_SUCCESS:
 			localStorage.setItem('user_data', JSON.stringify(action.payload));
 			return { ...initialState, user_data: action.payload };
 		case FETCH_EVENT_SUCCESS:
-			localStorage.setItem('event_data', JSON.stringify(action.payload));
-			return { ...initialState, event_data: action.payload };
+      localStorage.setItem('event_data', JSON.stringify(action.payload));
+			return { ...state, event_data: action.payload, loading: false, called: true };
 		case FETCH_FAILURE:
 			localStorage.removeItem('event_data');
-      return { ...state, error: action.payload, called: true };
+      return { ...state, error: action.payload, called: true, loading: false };
     case POST_EVENT_SUCCESS:
-      return {...initialState, error: '', called: true, loading: false};
+      action.payload.people = action.payload.guests.length;
+      let first_name = action.payload.full_name.split(" ");
+      action.payload.first_name = first_name[0]
+      state.user_data.events.push(action.payload);
+      localStorage.setItem('user_data', JSON.stringify(state.user_data));
+      return {...state, error: '', called: true, loading: false};
     case POST_EVENT_FAILURE:
       return {...state, error: action.payload, called: true, loading: false};
     case EDIT_EVENT_SUCCESS: 
       localStorage.setItem('event_data', JSON.stringify(action.payload));
       return {...state, called: true, error: '', loading: false, event_data: action.payload}
     case DELETE_EVENT_SUCCESS:
-      let newEvents = initialState.user_data.events.filter(event => event.id !== action.payload)
+      let newEvents = state.user_data.events.filter(event => event.id !== action.payload)
       localStorage.removeItem('event_data');
       return {...state, called: true, error: '', loading: false, event_data: null, user_data: {...state.user_data, events: newEvents}}
     case POST_GUESTS_SUCCESS:
       let newEvent = {...initialState.event_data, guests: action.payload.guests}
-      return {...initialState, called: true, error: '', loading: false, event_data: newEvent }
+      localStorage.setItem('event_data', JSON.stringify(newEvent));
+      return {...state, called: true, error: '', loading: false, event_data: newEvent }
     case POST_GUESTS_FAILURE:
       return {...initialState, called: true, error: action.payload, loading: false}
     case EDIT_GUEST_SUCCESS:
-      let guests = initialState.event_data.guests.filter(guest => {
+      const updatedGuests = initialState.event_data.guests.filter(guest => {
         if (guest.username === action.payload.username) {
           guest.attended = action.payload.attended;
         }
         return guest
       })
-      return {...initialState, event_data: {...initialState.event_data, guests: guests}}
+
+      localStorage.setItem('event_data', JSON.stringify({...state.event_data, guests: updatedGuests}));
+      return {...state, called: true, loading: false, event_data: {...state.event_data, guests: updatedGuests}}
+    case DELETE_GUEST_SUCCESS:
+      let filteredGuests = state.event_data.guests.filter(guest => guest.username !== action.payload)
+      localStorage.setItem('event_data', JSON.stringify({...state.event_data, guests: filteredGuests}));
+      return {...state, loading: false, called: true, event_data: {...state.event_data, guests: filteredGuests}}
+    case DELETE_GUEST_FAILURE:
+      return {...initialState, error: action.payload}
 		default:
 			return state;
 	}

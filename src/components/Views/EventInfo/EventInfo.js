@@ -15,16 +15,16 @@ const EventInfo = (props) => {
   }, [])
 
   useEffect(() => {
-    if (!event && props.called && !props.error) {
+    if (!event && props.called) {
       props.history.push('/');
     }
-  }, [props.called])
+  }, [props.event_data])
 
   return (
     <div>
       <Button onClick={() => props.history.push('/')}>Go Back</Button>
-      I am the Event Info div
-      {event && (<><p>Created by {event.full_name} @{event.created_by}</p>
+      
+      {props.called && event && (<><p>Created by {event.full_name} @{event.created_by}</p>
       {event.created_by === props.username && <div>
           <Button onClick={() => props.history.push(`/events/${props.match.params.event_id}/edit`)}>Edit Event Info</Button>
           <Button onClick={() => props.deleteEvent(event.id)}>Delete</Button>
@@ -53,6 +53,7 @@ const mapStateToProps = state => {
     username: state.username,
     called: state.called,
     error: state.error,
+    loading: state.loading,
   }
 }
 

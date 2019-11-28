@@ -8,8 +8,9 @@ import { editEventInfo } from '../../../actions';
 
 const EditEvent = (props) => {
   const dateFormat = 'MM/DD/YYYY';
+  let [called, setCalled] = useState(false);
+  let [event, setEvent] = useState(props.event);
 
-  let [event, setEvent] = useState();
   useEffect(() => {
     axiosWithAuth().get(`/api/events/${props.match.params.event_id}`)
       .then(res => setEvent(res.data))
@@ -24,15 +25,16 @@ const EditEvent = (props) => {
         props.form.setFieldsValue({date: moment(new Date(date), dateFormat), title, description, points});
       }
     }
-    if (props.called && !props.error) {
+    if (called && !props.error) {
       props.history.goBack();
     }
-  }, [event, props.called])
+  }, [props.loading])
 
   const handleSubmit = e => {
     e.preventDefault();
     props.form.validateFields((err, values) => {
 			if (!err) {
+        setCalled(props.called)
         props.editEventInfo({...event, ...values});
 			}
 		});
@@ -92,11 +94,13 @@ const EditEvent = (props) => {
   )
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state, ownProps) => {
   return {
     username: state.username,
     called: state.called,
+    loading: state.loading,
     error: state.error,
+    event: state.event_data
   }
 }
 

@@ -1,0 +1,9 @@
+.guest-card {
+  .guest-del {
+    margin-left: 0.5rem;
+    transition: 0.3s;
+    &:hover {
+      color: #8c8c8c;
+    }
+  }
+}
