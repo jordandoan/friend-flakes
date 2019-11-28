@@ -1,31 +1,39 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Spin, Button } from 'antd';
+import { axiosWithAuth } from '../../../utils';
 
 import EventCard from '../../Other/EventCard';
 import FriendsList from '../../Other/FriendsList';
+import EventForm from '../../Forms/EventForm';
+
 
 import './Dashboard.scss';
+import { getUserInfo } from '../../../actions';
 
 const Dashboard = (props) => {
     let token = localStorage.getItem('token');
     let user = props.user_data;
-
     let pastEvents;
     let createdFutureEvents;
     let otherFutureEvents;
-
     if (user) {
         [pastEvents, createdFutureEvents, otherFutureEvents] = sortEvents(user.events, user.id);
     }
 
+    useEffect(() => {
+      props.getUserInfo(props.username);
+    }, [])
+    
     return (
         <div>
-            {!user && <Spin className="spinner" size="large"/>}
-            {user && token &&
+            <EventForm />
+            {props.loading && <Spin className="spinner" size="large"/>}
+            {user &&
                 <>
                 <h2>Hello, {props.username}</h2>
-                <Button>Add an event</Button>
+                {/* <FriendsList /> */}
+
                 <div className="events-container">
                     <h2>Upcoming Events:</h2>
                     <div>
@@ -61,15 +69,17 @@ const Dashboard = (props) => {
 }
 
 function sortEvents(events, id) {
+
     let time = new Date().getTime();
     let pastEvents = [];
     let yourFuture = [];
     let otherFuture = [];
     events.forEach(event => {
+        event.date = new Date(event.date);
         if (event.date.getTime() < time) {
             pastEvents.push(event)
         } else {
-            if (event.created_by == id) {
+            if (event.user_id == id) {
                 yourFuture.push(event)
             } else {
                 otherFuture.push(event);
@@ -82,6 +92,7 @@ const mapStateToProps = state => {
     return {
         user_data: state.user_data,
         username: state.username,
+        loading: state.loading,
     }
 }
-export default connect(mapStateToProps, {})(Dashboard);
+export default connect(mapStateToProps, { getUserInfo: getUserInfo })(Dashboard);
