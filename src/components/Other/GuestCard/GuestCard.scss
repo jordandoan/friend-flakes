@@ -1,4 +1,9 @@
 .guest-card {
+  width: 20%;
+  border: 1px solid black;
+  border-radius: 4px;
+  text-align: center;
+  padding: 2% 0;
   .guest-del {
     margin-left: 0.5rem;
     transition: 0.3s;

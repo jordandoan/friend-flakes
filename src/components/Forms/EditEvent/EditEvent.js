@@ -6,6 +6,8 @@ import moment from 'moment';
 import { axiosWithAuth } from '../../../utils';
 import { editEventInfo } from '../../../actions';
 
+import './EditEvent.scss';
+
 const EditEvent = (props) => {
   const dateFormat = 'MM/DD/YYYY';
   let [called, setCalled] = useState(false);
@@ -43,8 +45,8 @@ const EditEvent = (props) => {
   const { getFieldDecorator } = props.form;
 
   return (
-    <div>
-      <Button onClick={() => props.history.goBack()}>Go Back</Button>
+    <div className="edit-event-form">
+      <Button className='go-back' onClick={() => props.history.goBack()}>Go Back</Button>
       <h2>Edit Event</h2>
       {event &&
         <Form onSubmit={handleSubmit}>
@@ -65,7 +67,6 @@ const EditEvent = (props) => {
                 rules: [{ required: true, message: 'Please enter an integer' }],
               })(
                 <InputNumber
-                  style={{ width: '500px' }}
                   prefix={
                     <Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />
                   }
