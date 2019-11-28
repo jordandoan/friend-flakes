@@ -24,6 +24,7 @@ const Dashboard = (props) => {
     useEffect(() => {
       props.getUserInfo(props.username);
     }, [])
+    
     return (
         <div>
             <EventForm />

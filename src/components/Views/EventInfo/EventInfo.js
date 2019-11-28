@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import { Button } from 'antd';
 
 import GuestForm from '../../Forms/GuestForm';
+import GuestCard from '../../Other/GuestCard';
+
 import { getEventInfo, deleteEvent } from '../../../actions';
 
 const EventInfo = (props) => {
@@ -26,7 +28,7 @@ const EventInfo = (props) => {
       {event.created_by === props.username && <div>
           <Button onClick={() => props.history.push(`/events/${props.match.params.event_id}/edit`)}>Edit Event Info</Button>
           <Button onClick={() => props.deleteEvent(event.id)}>Delete</Button>
-          <GuestForm />
+          <GuestForm history={props.history} match={props.match} />
         </div>
       }
       <h2>{event.title}</h2>
@@ -36,9 +38,7 @@ const EventInfo = (props) => {
       <div>
         <p>Guests</p>
         {event.guests.map(guest => 
-          <div>
-            <p>{guest.full_name} @{guest.username} {guest.attended ? "Attending" : "Flaking"}</p>
-          </div>
+          <GuestCard guest={guest} eventId={event.id} createdBy={event.created_by}/>
         )}
       </div>
       </>

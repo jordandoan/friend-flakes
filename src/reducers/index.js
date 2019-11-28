@@ -15,9 +15,13 @@ import {
   POST_EVENT_SUCCESS,
   EDIT_EVENT_SUCCESS,
   DELETE_EVENT_SUCCESS,
+  POST_GUESTS_SUCCESS,
+  POST_GUESTS_FAILURE,
+  EDIT_GUEST_SUCCESS,
 } from '../actions/';
 
 export const reducer = (state = initialState, action) => {
+  console.log(action);
 	switch (action.type) {
 		case LOGIN_SUCCESS:
 			localStorage.setItem('token', action.payload.token);
@@ -62,9 +66,8 @@ export const reducer = (state = initialState, action) => {
 			localStorage.removeItem('event_data');
       return { ...state, error: action.payload, called: true };
     case POST_EVENT_SUCCESS:
-      return {...state, error: '', called: true, loading: false};
+      return {...initialState, error: '', called: true, loading: false};
     case POST_EVENT_FAILURE:
-      console.log('we made it!!!');
       return {...state, error: action.payload, called: true, loading: false};
     case EDIT_EVENT_SUCCESS: 
       localStorage.setItem('event_data', JSON.stringify(action.payload));
@@ -73,13 +76,25 @@ export const reducer = (state = initialState, action) => {
       let newEvents = initialState.user_data.events.filter(event => event.id !== action.payload)
       localStorage.removeItem('event_data');
       return {...state, called: true, error: '', loading: false, event_data: null, user_data: {...state.user_data, events: newEvents}}
+    case POST_GUESTS_SUCCESS:
+      let newEvent = {...initialState.event_data, guests: action.payload.guests}
+      return {...initialState, called: true, error: '', loading: false, event_data: newEvent }
+    case POST_GUESTS_FAILURE:
+      return {...initialState, called: true, error: action.payload, loading: false}
+    case EDIT_GUEST_SUCCESS:
+      let guests = initialState.event_data.guests.filter(guest => {
+        if (guest.username === action.payload.username) {
+          guest.attended = action.payload.attended;
+        }
+        return guest
+      })
+      return {...initialState, event_data: {...initialState.event_data, guests: guests}}
 		default:
 			return state;
 	}
 };
 
 const initialState = {
-	title: 'Friend Flakes',
 	error: '',
 	login_error: '',
 	signup_error: '',

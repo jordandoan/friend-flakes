@@ -17,6 +17,9 @@ export const POST_EVENT_SUCCESS = "POST_EVENT_SUCCESS";
 export const POST_EVENT_FAILURE = "POST_EVENT_FAILURE";
 export const EDIT_EVENT_SUCCESS = "EDIT_EVENT_SUCCESS";
 export const DELETE_EVENT_SUCCESS = "DELETE_EVENT_SUCCESS";
+export const POST_GUESTS_SUCCESS = "POST_GUESTS_SUCCESS";
+export const POST_GUESTS_FAILURE = "POST_GUESTS_FAILURE";
+export const EDIT_GUEST_SUCCESS = "EDIT_GUEST_SUCCESS";
 
 export const logInUser = (user) => dispatch => {
   dispatch({type: NO_ERROR})
@@ -85,12 +88,34 @@ export const editEventInfo = (event) => dispatch => {
     .then(res => dispatch({type: EDIT_EVENT_SUCCESS, payload: event}))
 }
 
-export const deleteEvent = (event_id) => dispatch => {
+export const deleteEvent = (eventId) => dispatch => {
   dispatch({type: LOADING})
-  axiosWithAuth().delete(`/api/events/${event_id}`)
-    .then(res => dispatch({type: DELETE_EVENT_SUCCESS, payload: event_id}))
+  axiosWithAuth().delete(`/api/events/${eventId}`)
+    .then(res => dispatch({type: DELETE_EVENT_SUCCESS, payload: eventId}))
 }
 
+export const inviteGuests = (eventId, guests) => dispatch => {
+  dispatch({type: LOADING})
+  guests.forEach((guest, idx) => {
+    guests[idx] = {username: guest, attended: true}
+  });
+  let invites = guests.map(guest =>
+    axiosWithAuth().post(`api/guests/${eventId}`, guest)
+      .then(res => guest)
+      .catch(err => Promise.reject(err.response.data.error))
+  )
+  Promise.all(invites)
+    .then(res => axiosWithAuth().get(`api/guests/${eventId}`)
+      .then(res => dispatch({type: POST_GUESTS_SUCCESS, payload: res.data}))
+    )
+    .catch(err => dispatch({type: POST_GUESTS_FAILURE, payload: err}))
+}
+
+export const editGuestStatus = (eventId, username, status) => dispatch => {
+  dispatch({type: LOADING})
+  axiosWithAuth().put(`api/guests/${eventId}/${username}`, status)
+    .then(res => dispatch({type: EDIT_GUEST_SUCCESS, payload: {...status, username: username}}))
+}
 export const logOut = () => {
   return {type: LOG_OUT}
 }

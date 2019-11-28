@@ -6,25 +6,29 @@ import {
 	Button,
 	Modal,
 } from 'antd';
-
 import { connect } from 'react-redux';
+import { inviteGuests } from '../../../actions';
 
 const GuestForm = props => {
-  console.log(props);
   const { getFieldDecorator, getFieldValue } = props.form;
   const [id, setId] = useState(1);
 
   const handleSubmit = e => {
 		e.preventDefault();
 		props.form.validateFields((err, values) => {
-      console.log(values);
 			if (!err) {
-
-        alert('successful');
+        props.inviteGuests(props.match.params.event_id, values.names);
+        props.setVis(false);
 			}
 		});
-	};
-
+  };
+  
+  // useEffect(() => {
+  //   if (props.called) {
+  //     props.setVis(false)
+  //   }
+  // }, [props.called])
+  
 	const remove = k => {
 		const { form } = props;
 		// can use data-binding to get
@@ -104,8 +108,8 @@ const GuestForm = props => {
   return (
     <Modal
       visible={props.visible}
-      title='Create a new collection'
-      okText='Create'
+      title='Invite guests to: NAME EVENT'
+      okText='Invite'
       onCancel={props.onCancel}
       onOk={e => handleSubmit(e)}
       // confirmLoading={confirmLoading}
@@ -126,13 +130,13 @@ const GuestForm = props => {
 
 const NewGuestForm = Form.create()(GuestForm);
 
-const GuestFormModal = () => {
+const GuestFormModal = ({ inviteGuests, history, match }) => {
   let [visible, setVis] = useState(false);
 
   const showModal = () => {
-    console.log('hi');
     setVis(true);
   };
+
   const handleCancel = () => {
     setVis(false);
   };
@@ -146,6 +150,9 @@ const GuestFormModal = () => {
         visible={visible}
         onCancel={handleCancel}
         setVis={setVis}
+        inviteGuests={inviteGuests}
+        history={history}
+        match={match}
         // called={called}
         // error={error}
         // username={username}
@@ -154,4 +161,11 @@ const GuestFormModal = () => {
   );
 };
 
-export default GuestFormModal;
+const mapStateToProps = state => {
+  return {
+    called: state.called,
+    error: state.error
+  }
+}
+
+export default connect(mapStateToProps, {inviteGuests:inviteGuests})(GuestFormModal);
