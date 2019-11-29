@@ -9,12 +9,10 @@ import Welcome from './components/Views/Welcome';
 import Dashboard from './components/Views/Dashboard';
 import SignupForm from './components/Views/SignupPage';
 import LogOut from './components/Other/LogOut';
-import EventForm from './components/Forms/EventForm';
 import EventInfo from './components/Views/EventInfo';
 import EditEvent from './components/Forms/EditEvent';
 
 import './App.scss';
-import { statement } from '@babel/template';
 
 function App({username, error, loaded}) {
   

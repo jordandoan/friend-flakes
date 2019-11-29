@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Button, Descriptions } from 'antd';
+import { Button } from 'antd';
 
 import GuestForm from '../../Forms/GuestForm';
 import GuestCard from '../../Other/GuestCard';

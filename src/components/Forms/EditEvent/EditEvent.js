@@ -20,7 +20,7 @@ const EditEvent = (props) => {
   
   useEffect(() => {
     if (event) {
-      if (event.created_by != props.username) {
+      if (event.created_by !== props.username) {
         props.history.goBack();
       } else {
         let { date, title, description, points} = event

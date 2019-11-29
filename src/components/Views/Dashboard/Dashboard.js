@@ -1,10 +1,9 @@
 import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
-import { Spin, Button } from 'antd';
-import { axiosWithAuth } from '../../../utils';
+import { Spin } from 'antd';
 
 import EventCard from '../../Other/EventCard';
-import FriendsList from '../../Other/FriendsList';
+// import FriendsList from '../../Other/FriendsList';
 import EventForm from '../../Forms/EventForm';
 
 
@@ -12,7 +11,6 @@ import './Dashboard.scss';
 import { getUserInfo } from '../../../actions';
 
 const Dashboard = (props) => {
-    let token = localStorage.getItem('token');
     let user = props.user_data;
     let pastEvents;
     let createdFutureEvents;
@@ -79,7 +77,7 @@ function sortEvents(events, id) {
         if (event.date.getTime() < time) {
             pastEvents.push(event)
         } else {
-            if (event.user_id == id) {
+            if (event.user_id === id) {
                 yourFuture.push(event)
             } else {
                 otherFuture.push(event);
