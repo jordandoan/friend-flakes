@@ -17,6 +17,9 @@ const LoginForm = (props) => {
         if (props.error && loading) {
             props.history.push("/login");
         }
+        if (props.called && props.username) {
+          props.history.push("/dashboard");
+        }
     },[props.error]);
 
     const { getFieldDecorator, getFieldsError, getFieldError, isFieldTouched } = props.form;
@@ -73,7 +76,8 @@ const LoginForm = (props) => {
 
 const mapStateToProps = state => {
     return {
-        error: state.login_error
+      username: state.username,
+      error: state.login_error
     }
 };
 

@@ -30,8 +30,8 @@ export const reducer = (state = initialState, action) => {
 			return {
 				...state,
 				username: action.payload.username,
-				error: false,
-				error_message: '',
+        error: false,
+        called: true,
 				signup_success: '',
 				login_error: '',
 			};
@@ -45,7 +45,7 @@ export const reducer = (state = initialState, action) => {
 		case LOGIN_ERROR:
 			return { ...state, login_error: action.payload, signup_success: '' };
 		case SIGNUP_ERROR:
-			return { ...state, signup_error: action.payload };
+			return { ...state, signup_error: action.payload, signup_success: '', };
 		case ERROR:
 			return { ...state, error: action.payload };
 		case NO_ERROR:
@@ -56,10 +56,10 @@ export const reducer = (state = initialState, action) => {
 			localStorage.clear();
 			return { ...initialState, username: '' };
 		case LOADING:
-			return {...initialState, loading: true};
+			return {...state, called: false, error: '', loading: true};
 		case FETCH_USER_SUCCESS:
 			localStorage.setItem('user_data', JSON.stringify(action.payload));
-			return { ...initialState, user_data: action.payload };
+			return { ...state, user_data: action.payload, loading: false, called: true };
 		case FETCH_EVENT_SUCCESS:
       localStorage.setItem('event_data', JSON.stringify(action.payload));
 			return { ...state, event_data: action.payload, loading: false, called: true };
@@ -72,7 +72,7 @@ export const reducer = (state = initialState, action) => {
       action.payload.first_name = first_name[0]
       state.user_data.events.push(action.payload);
       localStorage.setItem('user_data', JSON.stringify(state.user_data));
-      return {...state, error: '', called: true, loading: false};
+      return {...state, error: '', signup_error: '', login_error: '', signup_success: '', called: true, loading: false};
     case POST_EVENT_FAILURE:
       return {...state, error: action.payload, called: true, loading: false};
     case EDIT_EVENT_SUCCESS: 

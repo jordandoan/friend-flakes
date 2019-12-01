@@ -25,7 +25,7 @@ export const DELETE_GUEST_SUCCESS = "DELETE_GUEST_SUCCESS";
 export const DELETE_GUEST_FAILURE = "DELETE_GUEST_FAILURE";
 
 export const logInUser = (user) => dispatch => {
-  dispatch({type: NO_ERROR})
+  dispatch({type: LOADING})
   axiosWithAuth().post("/api/auth/login", user)
     .then(res =>  dispatch({type: LOGIN_SUCCESS, payload: {username: user.username, token: res.data.token}}))
     .catch(err => dispatch({type: LOGIN_ERROR, payload:err.response.data.error}));

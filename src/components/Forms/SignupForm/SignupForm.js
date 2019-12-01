@@ -39,8 +39,8 @@ const SignupPage = (props) => {
 
     return (
         <div className="signup-container">
-            { props.signup_success && <p>{props.signup_success} <Link to="/login">Log in </Link></p>}
-            { props.error && <p>{props.error}</p>}
+            { props.signup_success && <h2>{props.signup_success} <Link to="/login">Log in </Link></h2>}
+            { props.error && <h2>{props.error}</h2>}
             <h2>Sign Up</h2>
             <Form onSubmit={(e) => handleSubmit(e)} className="signup-form">
                 <div className="names">
