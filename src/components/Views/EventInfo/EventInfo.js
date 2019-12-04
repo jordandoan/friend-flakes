@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Button } from 'antd';
 
@@ -11,13 +11,17 @@ import './EventInfo.scss';
 
 const EventInfo = (props) => {
   let event = props.event_data;
-
+  const [called, setCalled] = useState(false);
+  
   useEffect(() => {
     props.getEventInfo(props.match.params.event_id);
   }, [])
 
   useEffect(() => {
-    if (!event && props.called) {
+    if (props.called) {
+      setCalled(true);
+    }
+    if (!event && called) {
       props.history.push('/');
     }
   }, [props.event_data])

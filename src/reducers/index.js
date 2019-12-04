@@ -54,7 +54,7 @@ export const reducer = (state = initialState, action) => {
 			return { ...state, signup_success: '', signup_error: '' };
 		case LOG_OUT:
 			localStorage.clear();
-			return { ...initialState, username: '' };
+			return {...initialState, event_data: null, user_data: null, username: null}
 		case LOADING:
 			return {...state, called: false, error: '', loading: true};
 		case FETCH_USER_SUCCESS:
@@ -83,27 +83,27 @@ export const reducer = (state = initialState, action) => {
       localStorage.removeItem('event_data');
       return {...state, called: true, error: '', loading: false, event_data: null, user_data: {...state.user_data, events: newEvents}}
     case POST_GUESTS_SUCCESS:
-      let newEvent = {...initialState.event_data, guests: action.payload.guests}
+      let newEvent = {...state.event_data, guests: action.payload.guests}
       localStorage.setItem('event_data', JSON.stringify(newEvent));
       return {...state, called: true, error: '', loading: false, event_data: newEvent }
     case POST_GUESTS_FAILURE:
-      return {...initialState, called: true, error: action.payload, loading: false}
+      return {...state, called: true, error: action.payload, loading: false}
     case EDIT_GUEST_SUCCESS:
-      const updatedGuests = initialState.event_data.guests.filter(guest => {
+      const updatedGuests = state.event_data.guests.filter(guest => {
         if (guest.username === action.payload.username) {
           guest.attended = action.payload.attended;
         }
         return guest
       })
-
-      localStorage.setItem('event_data', JSON.stringify({...state.event_data, guests: updatedGuests}));
-      return {...state, called: true, loading: false, event_data: {...state.event_data, guests: updatedGuests}}
+      let newState = {...state.event_data, guests: updatedGuests}
+      localStorage.setItem('event_data', JSON.stringify(newState));
+      return {...state, error:'', called: true, loading: false, event_data: {...state.event_data, guests: updatedGuests}}
     case DELETE_GUEST_SUCCESS:
       let filteredGuests = state.event_data.guests.filter(guest => guest.username !== action.payload)
       localStorage.setItem('event_data', JSON.stringify({...state.event_data, guests: filteredGuests}));
       return {...state, loading: false, called: true, event_data: {...state.event_data, guests: filteredGuests}}
     case DELETE_GUEST_FAILURE:
-      return {...initialState, error: action.payload}
+      return {...state, called: true, loading: false, error: action.payload}
 		default:
 			return state;
 	}

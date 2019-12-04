@@ -18,3 +18,9 @@
 # Search
   - Search for events
   - Search for users
+
+
+# Problems
+ - Changing status of person for event removes them from view
+ - Loading spinner on dashboard persists sometimes
+ - need Flex-wrap 
