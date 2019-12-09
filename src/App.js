@@ -11,6 +11,8 @@ import SignupForm from './components/Views/SignupPage';
 import LogOut from './components/Other/LogOut';
 import EventInfo from './components/Views/EventInfo';
 import EditEvent from './components/Forms/EditEvent';
+import Settings from './components/Views/Settings';
+import Profile from './components/Views/Profile';
 
 import './App.scss';
 
@@ -29,6 +31,8 @@ function App({ username, error }) {
       <Route path="/dashboard" component={ props => <Redirect to="/"/> } />
       <PrivateRoute exact path="/events/:event_id" component={EventInfo} />
       <PrivateRoute path="/events/:event_id/edit" component={EditEvent} />
+      <PrivateRoute path ="/settings" component={Settings} />
+      <PrivateRoute path="/users/:username" component={Profile} />
     </div>
   );
 }
